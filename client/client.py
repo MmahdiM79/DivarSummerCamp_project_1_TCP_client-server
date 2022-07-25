@@ -1,5 +1,4 @@
 import sys
-from time import sleep
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from utils.functions import clear
@@ -14,7 +13,7 @@ from socket import AF_INET, SOCK_STREAM, socket
 
 if __name__ == '__main__':
     clear()
-    
+
     # removing the first and second arguments. (the script name and the path)
     orig_argv.pop(0)
     orig_argv.pop(0)
@@ -37,7 +36,7 @@ if __name__ == '__main__':
         s.sendall(input('please enter your key: ').encode())
         s.sendall(input('please enter your data: ').encode())
     else:
-        s.sendall(key.encode())
+        s.sendall((key).encode())
         s.sendall(data.encode())
         
     
