@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from utils.functions import clear
@@ -22,14 +23,23 @@ if __name__ == '__main__':
     HOST = orig_argv[0]
     PORT = int(orig_argv[1])
     
+    if len(orig_argv) > 2:
+        key = orig_argv[2]
+        data = orig_argv[3]
+    
     
     s = socket(AF_INET, SOCK_STREAM)
     s.connect((HOST, PORT))
     
     print(f'connected to server > host:{HOST}, port:{PORT}')
     
-    s.sendall(input('please enter your key: ').encode())
-    s.sendall(input('please enter your data: ').encode())
+    if len(orig_argv) <= 2:
+        s.sendall(input('please enter your key: ').encode())
+        s.sendall(input('please enter your data: ').encode())
+    else:
+        s.sendall(key.encode())
+        s.sendall(data.encode())
+        
     
     response = s.recv(1024).decode()
     print(f'\n\n\nresponse: {response}\n')
