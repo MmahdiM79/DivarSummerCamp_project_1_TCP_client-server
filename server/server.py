@@ -1,6 +1,11 @@
+from calendar import c
+from datetime import datetime
+from math import inf
 from socket import socket, AF_INET, SOCK_STREAM
 from os import argv
 from utils.functions import clear
+
+
 
 
 
@@ -25,11 +30,70 @@ def server_setup(host: str='127.0.0.1', port: int=8080) -> socket:
     
     return s
 
+
+
+
+
+def client_handler(conn: socket, buffer_size: int=2**10) -> None:
+    '''
+        Handles the client.
+        
+        
+        :param conn: The client socket.
+    '''
+    
+    key = conn.recv(buffer_size).decode()
+    print(f'[client {key}] -> key: {key}')
+    
+    data = conn.recv(buffer_size).decode()
+    print(f'[client {key}] -> data: {data}')
+    
+    data = data.split(key)
+    data = map(int, data)
+    
+    response = sum(data)
+    conn.send(str(response).encode())
+    print(f'[client {key}] <- response: {response}')
+    
+    
+    conn.close()
+
+
+
+
+
+def server_listen(s: socket, n: int=inf) -> None:
+    '''
+        Listens for connections on the given socket.\n
+        If a connection is made, the server will accept it and handle it.\n
+        See server.client_handler() for more information.
+        
+        
+        
+        :param s: The socket to listen on.
+        :param n: The number of connections to accept. (default: inf)
+    '''
+    
+    s.listen()
+    
+    counter = 0
+    while counter < n:
+        conn, addr = s.accept()
+        print(f'connection from {addr}. [{datetime.now()}]\n')
+        
+        client_handler(conn)
+        
+        counter += 1
+
+    
+    
     
 
 
 
 if __name__ == '__main__':
     clear()
-        
+    
+    
+    
     
