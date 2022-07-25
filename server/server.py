@@ -2,7 +2,6 @@ import sys
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from datetime import datetime
-from math import inf
 from socket import socket, AF_INET, SOCK_STREAM
 from utils.functions import clear
 from concurrent.futures import ThreadPoolExecutor
@@ -55,6 +54,7 @@ def client_handler(conn: socket, buffer_size: int=2**10) -> None:
     
     response = sum(data)
     conn.send(str(response).encode())
+    
     print(f'[client {key}] <- response: {response}')
     print(f'[client {key}] <- disconnected.\n\n')
     
@@ -65,7 +65,7 @@ def client_handler(conn: socket, buffer_size: int=2**10) -> None:
 
 
 
-def server_listen(s: socket, n: int=100) -> None:
+def server_listen(s: socket, n: int=16) -> None:
     '''
         Listens for connections on the given socket.\n
         If a connection is made, the server will accept it and handle it.\n
@@ -94,6 +94,7 @@ def server_listen(s: socket, n: int=100) -> None:
         except KeyboardInterrupt:
             print('\n\nserver is shutting down...')
             s.close()
+            executor.shutdown()
             exit()
 
     
