@@ -78,12 +78,18 @@ def server_listen(s: socket, n: int=inf) -> None:
     
     counter = 0
     while counter < n:
-        conn, addr = s.accept()
-        print(f'connection from {addr}. [{datetime.now()}]\n')
-        
-        client_handler(conn)
-        
-        counter += 1
+        try:
+            conn, addr = s.accept()
+            print(f'connection from {addr}. [{datetime.now()}]\n')
+            
+            client_handler(conn)
+            
+            counter += 1
+            
+        except KeyboardInterrupt:
+            print('\n\nserver is shutting down...')
+            s.close()
+            exit()
 
     
     
@@ -93,6 +99,9 @@ def server_listen(s: socket, n: int=inf) -> None:
 
 if __name__ == '__main__':
     clear()
+    
+    s = server_setup()
+    server_listen(s)
     
     
     
