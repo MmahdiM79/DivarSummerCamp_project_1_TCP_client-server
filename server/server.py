@@ -5,6 +5,7 @@ from datetime import datetime
 from math import inf
 from socket import socket, AF_INET, SOCK_STREAM
 from utils.functions import clear
+from concurrent.futures import ThreadPoolExecutor
 
 
 
@@ -55,6 +56,7 @@ def client_handler(conn: socket, buffer_size: int=2**10) -> None:
     response = sum(data)
     conn.send(str(response).encode())
     print(f'[client {key}] <- response: {response}')
+    print(f'[client {key}] <- disconnected.\n\n')
     
     
     conn.close()
@@ -63,7 +65,7 @@ def client_handler(conn: socket, buffer_size: int=2**10) -> None:
 
 
 
-def server_listen(s: socket, n: int=inf) -> None:
+def server_listen(s: socket, n: int=100) -> None:
     '''
         Listens for connections on the given socket.\n
         If a connection is made, the server will accept it and handle it.\n
@@ -72,20 +74,22 @@ def server_listen(s: socket, n: int=inf) -> None:
         
         
         :param s: The socket to listen on.
-        :param n: The number of connections to accept. (default: inf)
+        :param n: The number of connections to accept. (default: 100)
     '''
+    
+    executor = ThreadPoolExecutor(max_workers=n)
+    
     
     s.listen()
     
-    counter = 0
-    while counter < n:
+    while True:
         try:
             conn, addr = s.accept()
-            print(f'connection from {addr}. [{datetime.now()}]\n')
+            print(f'connection from {addr}. [{datetime.now()}]')
             
-            client_handler(conn)
-            
-            counter += 1
+            executor.submit(client_handler, conn)
+
+
             
         except KeyboardInterrupt:
             print('\n\nserver is shutting down...')
