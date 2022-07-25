@@ -1,8 +1,9 @@
-from calendar import c
+import sys
+sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
+
 from datetime import datetime
 from math import inf
 from socket import socket, AF_INET, SOCK_STREAM
-from os import argv
 from utils.functions import clear
 
 
