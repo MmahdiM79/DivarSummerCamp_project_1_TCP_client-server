@@ -31,6 +31,14 @@ class TcpClient(object):
         
         
         
+    def disconnect(self) -> None:
+        '''
+            disconnect from server.
+        '''
+        self.__sock.close()
+        
+        
+        
     def send(self, data: str) -> int:
         '''
             send data to server.\n
@@ -87,21 +95,21 @@ if __name__ == '__main__':
         data = orig_argv[3]
     
     
-    s = socket(AF_INET, SOCK_STREAM)
-    s.connect((HOST, PORT))
-    
+    client = TcpClient(host=HOST, port=PORT)
+    client.connect()
     print(f'connected to server > host:{HOST}, port:{PORT}')
     
     if len(orig_argv) <= 2:
-        s.sendall(input('please enter your key: ').encode())
-        s.sendall(input('please enter your data: ').encode())
+        client.send(data=input('please enter your key: '))
+        client.send(data=input('please enter your data: '))
     else:
-        s.sendall((key).encode())
-        s.sendall(data.encode())
+        client.send(data=key)
+        client.send(data=data)
         
     
-    response = s.recv(1024).decode()
+    response = client.recv()
     print(f'\n\n\nresponse: {response}\n')
     
-    s.close()
+    
+    client.disconnect()
     
