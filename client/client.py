@@ -9,6 +9,12 @@ from socket import AF_INET, SOCK_STREAM, socket
 
 
 class TcpClient(object):
+    '''
+        A simple tcp client.\n
+        You can use this class to send and receive data from a over a tcp connection.
+    '''
+    
+    
     
     def __init__(self, host: str='127.0.0.1', port: int=8080, buffer_size: int=1024):
         '''
