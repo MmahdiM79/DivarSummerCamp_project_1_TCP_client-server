@@ -1,11 +1,11 @@
 import sys
-from typing import Callable
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from datetime import datetime
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, _RetAddress
 from utils.functions import clear
 from concurrent.futures import ThreadPoolExecutor
+from typing import Callable, List, Tuple
 
 
 
@@ -73,6 +73,14 @@ class TcpServer(object):
             except KeyboardInterrupt:
                 
                 exit()
+                
+                
+                
+    def clients(self) -> List[Tuple[socket, _RetAddress]]:
+        '''
+            get the list of clients.
+        '''
+        return self.__clients
 
 
 
