@@ -81,6 +81,10 @@ class TcpServer(object):
             get the list of clients.
         '''
         return self.__clients
+    
+    
+    def __str__(self) -> str:
+        return f'host: {self.host}\nport: {self.port}\nbuffer_size: {self.buffer_size}'
 
 
 
