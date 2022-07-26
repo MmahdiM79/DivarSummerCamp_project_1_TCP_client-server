@@ -1,4 +1,5 @@
 import sys
+from typing import Callable
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from datetime import datetime
@@ -10,26 +11,60 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 
-
-
-def server_setup(host: str='127.0.0.1', port: int=8080) -> socket:
+class TcpServer(object):
     '''
-        Binds the server to the host and port.
-        
-        
-        :param host: The host to bind to. (default: 127.0.0.1)
-        :param port: The port to bind to. (default: 8080)
-        :param buffer_size: Size of the buffer. (default: 2**10)
-        
-        :return: The bound socket.
+        A simple tcp server.\n
+        This class handles the tcp connections concurrently.\n
     '''
     
-    print(f'server is up > host:{host}, port:{port}\n\n')
     
-    s = socket(AF_INET, SOCK_STREAM)
-    s.bind((host, port))
-    
-    return s
+    def __init__(self, host: str='127.0.0.1', port: int=8080, buffer_size: int=1024, max_connections: int=16):
+        '''
+            :param host: hostname or ip address. (default: 127.0.0.1)
+            :param port: port number. (default: 8080)
+            :param buffer_size: size of the buffer. (default: 1024)
+            :param max_connections: maximum number of connections. (default: 16)
+        '''
+        self.host = host
+        self.port = port
+        self.buffer_size = buffer_size
+        self.__sock = socket(AF_INET, SOCK_STREAM)
+        self.__clients = []
+        self.__executor = ThreadPoolExecutor(max_workers=max_connections)
+        
+        
+        
+    def setup(self) -> None:
+        '''
+            setup the server.
+        '''
+        self.__sock.bind((self.host, self.port))
+        print(f'server is up > host:{self.host}, port:{self.port}\n\n')
+        
+       
+        
+    def start(self, func: Callable[[socket], None]) -> None:
+        '''
+            listen for connections.
+            
+            :param func: function to call when a connection is established. 
+        '''
+        self.__sock.listen()
+        
+        while True:
+            try:
+                conn, addr = self.self.__sock.accept()
+                print(f'connection from {addr}. [{datetime.now()}]')
+                
+                self.executor.submit(func, conn)
+
+
+            except KeyboardInterrupt:
+                print('\n\nserver is shutting down...')
+                s.close()
+                self.executor.shutdown()
+                exit()
+
 
 
 
@@ -65,49 +100,13 @@ def client_handler(conn: socket, buffer_size: int=2**10) -> None:
 
 
 
-def server_listen(s: socket, n: int=16) -> None:
-    '''
-        Listens for connections on the given socket.\n
-        If a connection is made, the server will accept it and handle it.\n
-        See server.client_handler() for more information.
-        
-        
-        
-        :param s: The socket to listen on.
-        :param n: The number of connections to accept. (default: 100)
-    '''
-    
-    executor = ThreadPoolExecutor(max_workers=n)
-    
-    
-    s.listen()
-    
-    while True:
-        try:
-            conn, addr = s.accept()
-            print(f'connection from {addr}. [{datetime.now()}]')
-            
-            executor.submit(client_handler, conn)
-
-
-            
-        except KeyboardInterrupt:
-            print('\n\nserver is shutting down...')
-            s.close()
-            executor.shutdown()
-            exit()
-
-    
-    
-    
-
-
 
 if __name__ == '__main__':
     clear()
     
-    s = server_setup()
-    server_listen(s)
+    s = TcpServer()
+    s.setup()
+    s.start(client_handler)
     
     
     
