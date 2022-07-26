@@ -41,6 +41,16 @@ class TcpServer(object):
         self.__sock.bind((self.host, self.port))
         print(f'server is up > host:{self.host}, port:{self.port}\n\n')
         
+        
+        
+    def down(self) -> None:
+        '''
+            close the server.
+        '''
+        print('\n\nserver is shutting down...')
+        self.__sock.close()
+        self.__executor.shutdown()
+        
        
         
     def start(self, func: Callable[[socket], None]) -> None:
@@ -53,16 +63,15 @@ class TcpServer(object):
         
         while True:
             try:
-                conn, addr = self.self.__sock.accept()
+                conn, addr = self.__sock.accept()
                 print(f'connection from {addr}. [{datetime.now()}]')
+                self.__clients.append((conn, addr))
                 
-                self.executor.submit(func, conn)
+                self.__executor.submit(func, conn)
 
 
             except KeyboardInterrupt:
-                print('\n\nserver is shutting down...')
-                s.close()
-                self.executor.shutdown()
+                
                 exit()
 
 
