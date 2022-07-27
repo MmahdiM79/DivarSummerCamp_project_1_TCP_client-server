@@ -1,4 +1,5 @@
 import sys
+from typing import Tuple
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from utils.functions import clear
@@ -33,6 +34,7 @@ class TcpClient(object):
         '''
             connect to server.
         '''
+        print(f'connected to server > host:{self.host}, port:{self.port}')
         self.__sock.connect((self.host, self.port))
         
         
@@ -82,36 +84,39 @@ class TcpClient(object):
 
 
 
+def read_args() -> Tuple[str, int]:
+    '''
+        This function returns the host and port of the server, \n
+        from orig_argv
+        
+        
+        :return: (host, port)
+    '''
+    # removing the first and second arguments. (the script name and the path)
+    orig_argv.pop(0)
+    orig_argv.pop(0)
+    
+    host = orig_argv[0]
+    port = int(orig_argv[1])
+    
+    return host, port
+    
+
 
 
 
 if __name__ == '__main__':
     clear()
 
-    # removing the first and second arguments. (the script name and the path)
-    orig_argv.pop(0)
-    orig_argv.pop(0)
-    
-    
-    HOST = orig_argv[0]
-    PORT = int(orig_argv[1])
-    
-    if len(orig_argv) > 2:
-        key = orig_argv[2]
-        data = orig_argv[3]
-    
-    
+ 
+    HOST, PORT = read_args()
     client = TcpClient(host=HOST, port=PORT)
-    client.connect()
-    print(f'connected to server > host:{HOST}, port:{PORT}')
     
-    if len(orig_argv) <= 2:
-        client.send(data=input('please enter your key: '))
-        client.send(data=input('please enter your data: '))
-    else:
-        client.send(data=key)
-        client.send(data=data)
-        
+    
+    client.connect()
+    
+    client.send(data=input('please enter your key: '))
+    client.send(data=input('please enter your data: '))
     
     response = client.recv()
     print(f'\n\n\nresponse: {response}\n')
