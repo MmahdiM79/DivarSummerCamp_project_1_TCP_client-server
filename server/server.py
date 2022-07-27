@@ -2,10 +2,11 @@ import sys
 sys.path.insert(1, '/Users/mm.m.mm/Desktop/divar project 1/')
 
 from datetime import datetime
-from socket import socket, AF_INET, SOCK_STREAM, _RetAddress
+from socket import socket, AF_INET, SOCK_STREAM
 from utils.functions import clear
 from concurrent.futures import ThreadPoolExecutor
 from typing import Callable, List, Tuple
+from asyncio.trsock import _RetAddress
 
 
 
@@ -71,7 +72,7 @@ class TcpServer(object):
 
 
             except KeyboardInterrupt:
-                
+                self.down()
                 exit()
                 
                 
