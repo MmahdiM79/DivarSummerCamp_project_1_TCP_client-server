@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+
+<html align="right" lang="fa">
+<head>
+    <title>پنل کاربری</title>
+</head>
+<div id="navbar">
+    <ul class="horizontal" align="right">
+        <li>
+            <form action={% url 'appointment:search' %} method="get">
+                <input type="textbox" placeholder="جستجو" name="search"> <input type="submit" value="🔎">
+            </form>
+        </li>
+        
+        
+        {% if request.user.is_authenticated %}
+            <li><a id="logout" href={% url 'appointment:logout' %}> خروج </a></li>
+            <li><a id="profile" href={% url 'appointment:profile' %}> پروفایل </a></li>
+            <li><a id="panel"> پنل کاربری </a></li>
+
+        {% else %}
+            <li><a id="login" href={% url 'appointment:login' %}> ورود </a></li>
+            <li><a id="register" href={% url 'appointment:register' %}> ثبت نام </a></li> 
+
+        {% endif %}
+
+        <li><a id="homepage" href={% url 'index' %}> صفحه اصلی</a></li>
+        <li><a id="contact_us" href={% url 'contact-us' %}> تماس با ما </a></li>
+    </ul>
+</div>
+
+    <body>
+        {% block content %}
+            سلام دوست عزیز
+        {% endblock content %}
+    </body>
+</html>
+
+
+

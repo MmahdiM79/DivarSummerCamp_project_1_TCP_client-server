@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <u>
+        <li><span id"text_user_name">نام کاربری: {{ request.user.username }}</span></li>
+        <li><span id="text_first_name">نام: {{ request.user.first_name }}</span></li>
+        <li><span id="text_last_name">نام خانوادگی: {{ request.user.last_name }}</span></li>
+        <li><a id="setting" href="{% url 'portal:edit' %}"> ویرایش اطلاعات </a></li>
+    </ul>
+{% endblock %}

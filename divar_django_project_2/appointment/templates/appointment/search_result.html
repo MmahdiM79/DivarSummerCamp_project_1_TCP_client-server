@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if  res %}
+    <p> نتیجه جستجو </p>
+    <ul>
+        {% for user in res %}
+            <li>{{ user.username }}</li>
+            <li>{{ user.first_name }}</li>
+            <li>{{ user.last_name }}</li>
+            <p></p>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h2> چیزی یافت نشد </h2>
+{% endif %}
+{% endblock content %}

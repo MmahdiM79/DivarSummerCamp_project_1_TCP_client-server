@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul class="vertical">
+        
+        {% if request.user.is_superuser %}
+            <p></p>
+            <li><a href="{% url 'portal:new-course' %}"> اضافه کردن درس جدید </a></li>
+        {% endif %}
+
+        {% for course in courses %}
+            <ul id="course {{ course.code }} {{ course.group }}">
+
+                <li><a>Course Name: {{ course.name }}</a></li>
+                <li><a>Course Number: {{ course.code }}</a></li>
+                <li><a>Group: {{ course.group }}</a></li>
+
+                <li><a>Department: {{ course.department }}</a></li>
+                <li><a>Professor: {{ course.professor }}</a></li>
+
+                <li><a>Start Time: {{ course.start_time }}</a></li>
+                <li><a>End Time: {{ course.end_time }}</a></li>
+
+                <li><a>Day 1: {{ course.get_first_day_display }}</a></li>
+
+                {% if course.second_day %}
+                    <li><a>Day 2: {{ course.get_second_day_display }}</a></li>
+                {% endif %}
+
+            </ul>
+            <p></p>
+        {% endfor %}
+
+    </ul>
+{% endblock %}

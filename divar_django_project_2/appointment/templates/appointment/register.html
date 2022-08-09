@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form id="register_form" method="post" lang='en-us' align="left">
+    {% csrf_token %}
+    
+    <ul class="vertical">
+        {{ form.as_p }}
+        <input type="submit" value="ثبت نام">
+    </ul>
+    
+</form>
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <ul class="vertical">
+        {% if res == 'error' %}
+            <p> نام و ایمیل اجباری است </p>
+        {% elif res == 'done' %}
+            <p> نظر شما با موفقیت ثبت شد </p>
+        {% else %}
+        {% endif %}
+
+        <form id="contact_us_form" action="{% url 'contact-us' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input type="submit" value="ارسال">
+
+        </form>
+    </ul>
+{% endblock %}

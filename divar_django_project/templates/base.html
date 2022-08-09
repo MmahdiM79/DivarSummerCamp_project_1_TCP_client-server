@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+
+<html align="right" lang="fa">
+<head>
+    <title>پنل کاربری</title>
+</head>
+<div id="navbar">
+    <ul class="horizontal" align="right">
+        
+        {% if request.user.is_authenticated %}
+            <li><a id="logout" href={% url 'portal:logout' %}> خروج </a></li>
+            <li><a id="profile" href={% url 'portal:profile' %}> پروفایل </a></li>
+            <li><a id="panel" href={% url 'portal:panel' %}> پنل کاربری </a></li>
+
+        {% else %}
+            <li><a id="login" href={% url 'portal:login' %}> ورود </a></li>
+            <li><a id="register" href={% url 'portal:register' %}> ثبت نام </a></li> 
+
+        {% endif %}
+
+        <li><a id="homepage" href={% url 'index' %}> صفحه اصلی </a></li>
+        <li><a id="contact_us" href={% url 'contact-us' %}> تماس با ما </a></li>
+    </ul>
+</div>
+
+    <body>
+        {% block content %}
+        سلام دوست عزیز
+        {% endblock content %}
+    </body>
+</html>
+
+
+

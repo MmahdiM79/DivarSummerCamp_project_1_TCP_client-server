@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <ul class="vertical">
+        {{ form.as_p }}
+        <input type="submit" value="اضافه کردن">
+    </ul>
+
+</form>
+{% endblock %}

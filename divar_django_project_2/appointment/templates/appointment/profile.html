@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <u>
+        {% if request.user.pic.url != None %}
+            <li><img src={{ request.user.pic.url }} alt="profile"></img></li>
+        {% endif %}
+        <li><span id"text_user_name">نام کاربری: {{ request.user.username }}</span></li>
+        <li><span id="text_first_name">نام: {{ request.user.first_name }}</span></li>
+        <li><span id="text_last_name">نام خانوادگی: {{ request.user.last_name }}</span></li>
+        <li><span id="text_gender">جنسیت: {{ request.user.gender }}</span></li>
+        <li><span id="text_bio">بیوگرافی: {{ request.user.bio }}</span></li>
+
+        <li><a id="setting" href="{% url 'appointment:edit' %}"> ویرایش اطلاعات </a></li>
+    </ul>
+{% endblock %}
